@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import CurrentNewStar from '../CurrentNewStar/CurrentNewStar';
+import StarList from '../StarList/StarList';
+import NewStarForm from '../NewStarForm/NewStarForm';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +27,23 @@ class App extends Component {
       }
     }
   }
+  //lifecycle component. will be called once, basically when the page loads
+  componentDidMount(){
+    console.log('component mounted');
+    //this is a good place to make an initial GET request
+    this.getPlanets();
+  }
+
+  getPlanets = () => {
+    //GET
+    axios.get('https://swapi.co/api/planets/?format=json')
+    .then( (response) => {
+      console.log(response);
+      this.setState({
+        
+      })
+    })
+  }
 
   handleChangeFor = (propertyName) => (event) => {
     //save whats in the input on newStar.name
@@ -34,7 +57,7 @@ class App extends Component {
     })
 }
 
-handleClick = (event) => {
+handleFormClick = (event) => {
 event.preventDefault();
 console.log(this.state);
 // this.setState({
@@ -81,26 +104,20 @@ console.log(this.state);
     // })
 
     //best map usage
-    let starListItemArray = this.state.starList.map (star => {
-      return <li key={star.name}>The star {star.name} is {star.diameter} million kilometers</li>
-    })
+
 
     
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <form onSubmit={this.handleClick}>
-            <input placeholder="star name" value={this.state.newStar.name} type="text" onChange={this.handleChangeFor('name')}/>
-            <input placeholder="diameter"value={this.state.newStar.diameter} type="number" onChange={this.handleChangeFor('diameter')}/>
-            <input type="submit" value="Click me"/>
-          </form>
-        <ul className="App-intro">
-          {starListItemArray}
-        </ul>
+        <Header />
+        <CurrentNewStar currentStar={this.state.newStar}/>
+        <NewStarForm 
+          newForm={this.state.newStar} 
+          handleChangeForInput={this.handleChangeFor}
+          handleClick={this.handleFormClick}/>
+        <StarList listOfStars = {this.state.starList}/>
+        <Footer />
       </div>
     );
   }
