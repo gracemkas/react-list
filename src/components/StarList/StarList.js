@@ -8,7 +8,7 @@ class StarList extends Component {
     
   render() {
     let starListItemArray = this.props.listOfStars.map ((star, index) => {
-        return <Star starData={star} key={index}/>
+        return <Star starData={star} key={index} handleGetMoreInfo = {this.props.handleGetMoreInfo}/>
 
       })
     return (

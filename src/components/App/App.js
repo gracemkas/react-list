@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import CurrentNewStar from '../CurrentNewStar/CurrentNewStar';
 import StarList from '../StarList/StarList';
 import NewStarForm from '../NewStarForm/NewStarForm';
+import PlanetList from '../PlanetList/PlanetList';
 import './App.css';
 import axios from 'axios';
 
@@ -24,7 +25,8 @@ class App extends Component {
       newStar : {
         name : '',
         diameter : ''
-      }
+      },
+      planetList : []
     }
   }
   //lifecycle component. will be called once, basically when the page loads
@@ -38,12 +40,19 @@ class App extends Component {
     //GET
     axios.get('https://swapi.co/api/planets/?format=json')
     .then( (response) => {
-      console.log(response);
+      console.log(response.data.results);
       this.setState({
-        
+        planetList: response.data.results
       })
+      console.log('planets1', this.state.planetList);
     })
   }
+
+  handleGetMoreInfo = (star) => {
+    console.log('clicked', star);
+    
+  }
+
 
   handleChangeFor = (propertyName) => (event) => {
     //save whats in the input on newStar.name
@@ -83,7 +92,8 @@ console.log(this.state);
 
 
   render() {
-
+    console.log('planets', this.state.PlanetList);
+    
     // let starListItemArray = [];
     // for(let i = 0; i < this.state.starList.length; i++){
     //   starListItemArray.push(<li>{this.state.starList[i]}</li>)
@@ -106,8 +116,6 @@ console.log(this.state);
     //best map usage
 
 
-    
-
     return (
       <div className="App">
         <Header />
@@ -116,7 +124,8 @@ console.log(this.state);
           newForm={this.state.newStar} 
           handleChangeForInput={this.handleChangeFor}
           handleClick={this.handleFormClick}/>
-        <StarList listOfStars = {this.state.starList}/>
+        <StarList listOfStars = {this.state.starList} handleGetMoreInfo = {this.handleGetMoreInfo}/>
+        <PlanetList listOfPlanets = {this.state.planetList}/>
         <Footer />
       </div>
     );

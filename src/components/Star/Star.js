@@ -14,6 +14,10 @@ class Star extends Component {
             isVisible : !this.state.isVisible
         })
     }
+
+    handleMoreInfo = () => {
+        this.props.handleGetMoreInfo(this.props.starData)
+    }
     
     render() {
         console.log(this.state.isVisible);
@@ -37,6 +41,7 @@ class Star extends Component {
 
             {listItem}
             <button onClick={this.handleClick}>Show/Hide</button>
+            <button onClick={this.handleMoreInfo}>Click for more info</button>
             </div>
         )  
     }
